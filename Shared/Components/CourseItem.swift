@@ -1,18 +1,22 @@
 //
-//  ContentView.swift
-//  Shared
+//  CourseItem.swift
+//  MultiplatformApp
 //
-//  Created by Andres Vazquez on 2021-02-16.
+//  Created by Andres Vazquez on 2021-02-19.
 //
 
 import SwiftUI
 
-struct ContentView: View {
+struct CourseItem: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Image("Illustration 1")
-                .resizable()
-                .scaledToFit()
+            HStack {
+                Spacer()
+                Image("Illustration 1")
+                    .resizable()
+                    .scaledToFit()
+                Spacer()
+            }
             Text("SwiftUI for iOS 14")
                 .fontWeight(.bold)
             Text("20 Sections")
@@ -26,13 +30,9 @@ struct ContentView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct CourseItem_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            ContentView()
-            ContentView()
-                .previewLayout(.sizeThatFits)
-                .preferredColorScheme(.dark)
-        }
+        CourseItem()
+            .previewLayout(.sizeThatFits)
     }
 }

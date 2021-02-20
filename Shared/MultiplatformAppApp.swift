@@ -11,10 +11,7 @@ import SwiftUI
 struct MultiplatformAppApp: App {
     var body: some Scene {
         WindowGroup {
-            NavigationView {
-                Sidebar()
-                CoursesView()                
-            }
+            ContentView()
         }
         .commands {
             SidebarCommands()

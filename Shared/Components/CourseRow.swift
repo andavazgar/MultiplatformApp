@@ -28,11 +28,13 @@ struct CourseRow: View {
             }
             Spacer()
         }
+        .padding(.vertical, 4)
     }
 }
 
 struct CourseRow_Previews: PreviewProvider {
     static var previews: some View {
         CourseRow()
+            .previewLayout(.sizeThatFits)
     }
 }
