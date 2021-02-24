@@ -8,41 +8,65 @@
 import SwiftUI
 
 struct CoursesView: View {
-    @State private var showCourseDetails = false
+    @State private var selectedCourse: Course?
+    @State private var isDisabled = false
     @Namespace private var animation
     
-    var body: some View {
-        ZStack {
-            CourseItem()
-                .matchedGeometryEffect(id: "Card", in: animation)
-                .frame(width: 335, height: 250)
-            
-            if showCourseDetails {
-                ScrollView {
-                    CourseItem()
-                        .matchedGeometryEffect(id: "Card", in: animation)
-                    
+    var coursesGrid: some View {
+        ScrollView {
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 160), spacing: 16)], spacing: 16) {
+                ForEach(courses) { course in
                     VStack {
-                        ForEach(0 ..< 20) { item in
-                            CourseRow()
-                        }
+                        CourseItem(course: course)
+                            .matchedGeometryEffect(id: course.id, in: animation)
+                            .frame(height: 200)
+                            .onTapGesture {
+                                toggleCourseView(course: course)
+                            }
+                            .disabled(isDisabled)
                     }
-                    .padding(.horizontal)
-                    .background(Color("Background 1"))
+                    .matchedGeometryEffect(id: "container\(course.id)", in: animation)
                 }
-                .transition(.asymmetric(insertion: animate(withDelay: 0.3), removal: animate(withDelay: 0)))
-                .edgesIgnoringSafeArea(.all)
             }
-        }
-        .onTapGesture {
-            withAnimation(.spring()) {
-                showCourseDetails.toggle()
-            }
+            .padding()
+            .frame(maxWidth: .infinity)
         }
     }
     
-    func animate(withDelay delay: Double) -> AnyTransition {
-        AnyTransition.opacity.animation(Animation.spring().delay(delay))
+    var body: some View {
+        ZStack {
+            #if os(iOS)
+                coursesGrid
+                    .navigationBarHidden(true)
+            #else
+                coursesGrid
+            #endif
+            
+            if let selectedCourse = selectedCourse {
+                CourseDetail(course: selectedCourse, namespace: animation) {
+                    toggleCourseView(course: nil)
+                }
+                .zIndex(1)
+                .frame(maxWidth: 720)
+                .frame(maxWidth: .infinity)
+                .background(VisualEffectBlur().edgesIgnoringSafeArea(.all))
+            }
+        }
+        .navigationTitle("Courses")
+    }
+    
+    func toggleCourseView(course: Course?) {
+        withAnimation(.spring(response: 0.5, dampingFraction: 0.7, blendDuration: 0)) {
+            selectedCourse = course
+        }
+        
+        if course != nil {
+            isDisabled = true
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                isDisabled = false
+            }
+        }
     }
 }
 

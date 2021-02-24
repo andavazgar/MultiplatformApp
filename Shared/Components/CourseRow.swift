@@ -8,21 +8,20 @@
 import SwiftUI
 
 struct CourseRow: View {
+    var section: CourseSection
+    
     var body: some View {
         HStack(alignment: .top) {
-            Image(systemName: "paperplane.circle.fill")
-                .renderingMode(.template)
-                .imageScale(.medium)
+            Image(section.logo)
                 .frame(width: 48, height: 48)
-                .foregroundColor(.white)
-                .background(Color.blue)
+                .background(section.color)
                 .clipShape(Circle())
             
             VStack(alignment: .leading, spacing: 4) {
-                Text("SwiftUI")
+                Text(section.title)
                     .font(.subheadline)
                     .bold()
-                Text("Description")
+                Text(section.subtitle)
                     .font(.footnote)
                     .foregroundColor(.secondary)
             }
@@ -34,7 +33,7 @@ struct CourseRow: View {
 
 struct CourseRow_Previews: PreviewProvider {
     static var previews: some View {
-        CourseRow()
+        CourseRow(section: courseSections[0])
             .previewLayout(.sizeThatFits)
     }
 }

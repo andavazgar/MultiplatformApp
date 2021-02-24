@@ -52,6 +52,11 @@ struct Sidebar: View {
                         }
                     }
                 }
+                .onAppear {
+                    selection = nil
+                }
+            
+            CoursesView()
             #else
             sidebar
                 .frame(minWidth: 200, idealWidth: 250, maxWidth: 300)
